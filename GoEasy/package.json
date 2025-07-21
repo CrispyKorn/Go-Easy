@@ -1,0 +1,10 @@
+{
+    "name": "go-easy",
+    "version": "1.0.0",
+    "description": "The official Go Easy app",
+    "type": "module",
+    "dependencies": {
+        "express": "^4.21.2",
+        "socket.io": "^4.8.1"
+    }
+}
