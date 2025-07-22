@@ -56,6 +56,11 @@ resetGame.addEventListener("click", () =>
     socket.emit("reset");
 });
 
+socket.on("hide-choices", () => 
+{
+    document.getElementById("choices").style.display = "none";
+});
+
 socket.on("hide-hostonly-content", () => 
 {
     document.querySelectorAll(".host-side").forEach(element => 
@@ -66,6 +71,29 @@ socket.on("hide-hostonly-content", () =>
 
 socket.on("reveal-results", (p1Desire, p2Desire) => 
 {
-    document.getElementById("player-one-choice").innerText = p1Desire;
-    document.getElementById("player-two-choice").innerText = p2Desire;
+    document.getElementById("player-one-choice").innerHTML = p1Desire;
+    document.getElementById("player-two-choice").innerHTML = p2Desire;
+
+    document.getElementById("choices").style.display = "block";
+});
+
+socket.on("update-score", (p1Score, p2Score) => 
+{
+    document.getElementById("player-one-score").innerHTML = p1Score;
+    document.getElementById("player-two-score").innerHTML = p2Score;
+});
+
+socket.on("client-choice", (choice) => 
+{
+    document.getElementById("client-choice").innerHTML = choice;
+});
+
+socket.on("client-result", (result) => 
+{
+    document.getElementById("client-result").innerHTML = result;
+});
+
+socket.on("client-guess", (guess) => 
+{
+    document.getElementById("client-guess").innerHTML = guess;
 });
