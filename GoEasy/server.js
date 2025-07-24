@@ -84,8 +84,8 @@ io.on("connection", (socket) =>
     {
         p1Won = true;
 
-        let isP1 = socket.id === p1Id;
-        socket.emit("client-result", isP1 ? (p1Won ? "won" : "lost") : (p1Won ? "lost" : "won"));
+        socket.emit("client-result", p1Won ? "won" : "lost");
+        socket.broadcast.emit("client-result", p1Won ? "lost" : "won");
 
         console.log(`P1 won: ${p1Won}`);
     });
@@ -94,7 +94,6 @@ io.on("connection", (socket) =>
     {
         p1Won = false;
 
-        let isP1 = socket.id === p1Id;
         socket.emit("client-result", p1Won ? "won" : "lost");
         socket.broadcast.emit("client-result", p1Won ? "lost" : "won");
 

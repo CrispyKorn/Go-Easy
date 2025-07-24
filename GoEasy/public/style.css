@@ -1,0 +1,42 @@
+section {
+    padding: 20px 5%;
+}
+
+aside {
+    flex: 1;
+    background-color: peru;
+    padding: 20px 5%;
+}
+
+#core {
+    flex: 4;
+    background-color: khaki;
+}
+
+main {
+    margin: 20px min(50px, 5%);
+    display: flex;
+}
+
+* {
+    /*border-width: 1px;
+    border-style: solid;*/
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 10px 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: bisque;
+}
+
+h1 {
+    text-align: center;
+    text-shadow: green 1px 1px 2px;
+    font-size: 50px;
+    color: greenyellow;
+}
