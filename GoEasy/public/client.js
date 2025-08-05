@@ -74,7 +74,7 @@ socket.on("reveal-results", (p1Desire, p2Desire) =>
     document.getElementById("player-one-choice").innerHTML = p1Desire;
     document.getElementById("player-two-choice").innerHTML = p2Desire;
 
-    document.getElementById("choices").style.display = "block";
+    document.getElementById("choices").style.display = "flex";
 });
 
 socket.on("update-score", (p1Score, p2Score) => 

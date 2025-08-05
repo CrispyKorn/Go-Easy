@@ -4,39 +4,55 @@ section {
 
 aside {
     flex: 1;
-    background-color: peru;
+    background-color: #1D8A99;
     padding: 20px 5%;
 }
 
 #core {
-    flex: 4;
-    background-color: khaki;
+    flex: 2;
+    background-color: #02111B;
+    border: #1D8A99 10px solid;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    text-align: center;
 }
 
 main {
-    margin: 20px min(50px, 5%);
+    margin: 20px 20%;
     display: flex;
 }
 
 * {
     /*border-width: 1px;
     border-style: solid;*/
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
 }
 
 button {
     padding: 5px 10px;
     margin: 10px 20px;
-    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
-    background-color: bisque;
+    background-color: #02111B;
 }
 
 h1 {
     text-align: center;
-    text-shadow: green 1px 1px 2px;
+    text-shadow: #FEFFEA 0px 0px 20px;
     font-size: 50px;
-    color: greenyellow;
+    color: #FEFFEA;
+}
+
+p, h2, h3 {
+    color: #FEFFEA;
+}
+
+#choices, #scores {
+    display: flex;
+}
+
+#choices-player1, #choices-player2, #scores-player1, #scores-player2{
+    flex: 1;
 }

@@ -34,18 +34,28 @@
           <section>
             <button id="reveal" class="host-side">Reveal</button>
             <div id="choices">
-              <h3>Player 1 was trying to: </h3>
-              <p id="player-one-choice">???</p>
-              <h3>Player 2 was trying to: </h3>
-              <p id="player-two-choice">???</p>
+              <div id="choices-player1">
+                <h3>Player 1 was trying to: </h3>
+                <p id="player-one-choice">???</p>
+              </div>
+              <div id="choices-player2">
+                <h3>Player 2 was trying to: </h3>
+                <p id="player-two-choice">???</p>
+              </div>
             </div>
           </section>
           <section>
             <h2>Score</h2>
-            <h3 id="player-one">Player 1: </h3>
-            <p id="player-one-score">0</p>
-            <h3 id="player-two">Player 2: </h3>
+            <div id="scores">
+              <div id="scores-player1">
+              <h3 id="player-one">Player 1: </h3>
+              <p id="player-one-score">0</p>
+            </div>
+            <div id="scores-player2">
+              <h3 id="player-two">Player 2: </h3>
             <p id="player-two-score">0</p>
+            </div>
+            </div>
           </section>
           <section class="host-side">
             <button id="next-round">Next Round</button>
