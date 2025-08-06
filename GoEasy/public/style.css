@@ -6,6 +6,8 @@ aside {
     flex: 1;
     background-color: #1D8A99;
     padding: 20px 5%;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 
 #core {
@@ -43,6 +45,7 @@ h1 {
     text-shadow: #FEFFEA 0px 0px 20px;
     font-size: 50px;
     color: #FEFFEA;
+    margin: 100px 0px;
 }
 
 p, h2, h3 {

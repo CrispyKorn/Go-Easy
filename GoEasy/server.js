@@ -31,7 +31,11 @@ io.on("connection", (socket) =>
 
     io.emit("hide-choices");
 
-    if (p1Id === 0) p1Id = socket.id;
+    if (p1Id === 0) 
+    {
+        p1Id = socket.id;
+        socket.emit("set-playerOne");
+    }
     else if (p2Id === 0) 
     {
         p2Id = socket.id;
