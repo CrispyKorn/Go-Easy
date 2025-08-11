@@ -17,37 +17,40 @@ const sectionThree = document.getElementById("section-three");
 const sectionFour = document.getElementById("section-four");
 const sectionFive = document.getElementById("section-five");
 const sectionSix = document.getElementById("section-six");
+const waitingForPlayerOne = document.getElementById("waiting-for-player-one");
+const waitingForPlayerTwo = document.getElementById("waiting-for-player-two");
+const choices = document.getElementById("choices");
 
 let isPlayerOne = false;
 
 preChoiceWin.addEventListener("click", () => 
 {
-    socket.emit("pre-choice-win");
+    socket.emit("pre-choice", true);
 });
 
 preChoiceLose.addEventListener("click", () => 
 {
-    socket.emit("pre-choice-lose");
+    socket.emit("pre-choice", false);
 });
 
 postResultWin.addEventListener("click", () => 
 {
-    socket.emit("post-result-win");
+    socket.emit("post-result", true);
 });
 
 postResultLose.addEventListener("click", () => 
 {
-    socket.emit("post-result-lose");
+    socket.emit("post-result", false);
 });
 
 postChoiceWin.addEventListener("click", () => 
 {
-    socket.emit("post-choice-win");
+    socket.emit("post-choice", true);
 });
 
 postChoiceLose.addEventListener("click", () => 
 {
-    socket.emit("post-choice-lose");
+    socket.emit("post-choice", false);
 });
 
 reveal.addEventListener("click", () => 
@@ -73,11 +76,13 @@ socket.on("set-playerOne", () =>
 socket.on("hide-choices", () => 
 {
     sectionOne.style.display = "block";
-    document.getElementById("choices").style.display = "none";
     sectionTwo.style.display = "none";
     sectionThree.style.display = "none";
     sectionFour.style.display = "none";
+    choices.style.display = "none";
     nextRound.style.display = "none";
+    waitingForPlayerOne.style.display = "none";
+    waitingForPlayerTwo.style.display = "none";
     if (isPlayerOne) document.getElementById("reveal").style.display = "inline-block";
 });
 
@@ -93,8 +98,6 @@ socket.on("reveal-results", (p1Desire, p2Desire) =>
 {
     document.getElementById("player-one-choice").innerHTML = p1Desire;
     document.getElementById("player-two-choice").innerHTML = p2Desire;
-
-    MoveToSection(5);
 });
 
 socket.on("update-score", (p1Score, p2Score) => 
@@ -106,19 +109,22 @@ socket.on("update-score", (p1Score, p2Score) =>
 socket.on("client-choice", (choice) => 
 {
     document.getElementById("client-choice").innerHTML = choice;
-    MoveToSection(2);
 });
 
 socket.on("client-result", (result) => 
 {
     document.getElementById("client-result").innerHTML = result;
-    MoveToSection(3);
 });
 
 socket.on("client-guess", (guess) => 
 {
     document.getElementById("client-guess").innerHTML = guess;
-    MoveToSection(4);
+});
+
+socket.on("phase-complete", (phase) => 
+{
+    MoveToSection(phase + 1);
+    console.log(`Moving to phase ${phase}.`);
 });
 
 function MoveToSection(section)
@@ -130,11 +136,13 @@ function MoveToSection(section)
             sectionOne.style.display = "none";
 
             if (isPlayerOne) sectionTwo.style.display = "block";
+            else waitingForPlayerOne.style.display = "block";
         }
         break;
         case 3: 
         {
             if (isPlayerOne) sectionTwo.style.display = "none";
+            else waitingForPlayerOne.style.display = "none";
 
             sectionThree.style.display = "block";
         }
@@ -144,13 +152,15 @@ function MoveToSection(section)
             sectionThree.style.display = "none";
 
             if (isPlayerOne) sectionFour.style.display = "block";
-            
+            else waitingForPlayerOne.style.display = "block";
         }
         break;
         case 5: 
         {
             if (isPlayerOne) document.getElementById("reveal").style.display = "none";
-            document.getElementById("choices").style.display = "flex";
+
+            sectionFour.style.display = "block";
+            choices.style.display = "flex";
             nextRound.style.display = "inline-block";
         }
         break;
