@@ -8,17 +8,19 @@
       
       <title>Go Easy!</title>
       
+      <link rel="icon" href="favicon.png" /> 
       <link rel="stylesheet" href="style.css" />
       <script src="/socket.io/socket.io.js" defer></script>
       <script src="client.js" defer></script>
     </head>
     <body>
-      <h1>Go Easy</h1>
+      <header>
+        <h1>Go Easy</h1>
+      </header>
       <main>
         <div id="core">
-          <section id="waiting-for-player">
-            <p id="waiting-for-player-one">Waiting for Player 1...</p>
-            <p id="waiting-for-player-two">Waiting for Player 2...</p>
+          <section id="section-waiting">
+            <p id="waiting-for-player">Waiting for Player 1...</p>
           </section>
           <section id="section-one">
             <p>I want to: </p>  
@@ -36,7 +38,6 @@
             <button id="post-choice-lose">LOSE</button>
           </section>
           <section id="section-four">
-            <button id="reveal" class="host-side">Reveal</button>
             <div id="choices">
               <div id="choices-player1">
                 <h3>Player 1 was trying to: </h3>
@@ -75,6 +76,6 @@
           <p id="client-guess">...</p>
         </aside>
       </main>
-      
+      <footer></footer>
     </body>
 </html>

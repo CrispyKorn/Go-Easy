@@ -29,19 +29,14 @@ io.on("connection", (socket) =>
 {
     console.log("A user connected: ", socket.id);
 
-    io.emit("hide-choices");
     assignPlayer(socket);
-
     console.log(`p1Id: ${p1Id}, p2Id: ${p2Id}`);
+
+    io.emit("initialize");
 
     socket.on("disconnect", () => 
     {
-        console.log("User disconnected: ", socket.id);
-
-        if (socket.id === p1Id) p1Id = 0;
-        else if (socket.id === p2Id) p2Id = 0;
-
-        console.log(`p1Id: ${p1Id}, p2Id: ${p2Id}`);
+        handleDisconnect(socket);
     });
 
     // Interaction events
@@ -59,11 +54,6 @@ io.on("connection", (socket) =>
     socket.on("post-choice", (value) => 
     {
         setGuess(socket, value);
-    });
-
-    socket.on("reveal", () => 
-    {
-        revealResults();
     });
 
     socket.on("next-round", () => 
@@ -138,7 +128,11 @@ function setGuess(socket, value)
 
     console.log(`P1 thinks P2 wanted to win: ${p1ThinksP2WantsWin} | P2 thinks P1 wanted to win: ${p2ThinksP1WantsWin}`);
 
-    if (p1ThinksP2WantsWin != null && p2ThinksP1WantsWin != null) io.emit("phase-complete", 3);
+    if (p1ThinksP2WantsWin != null && p2ThinksP1WantsWin != null) 
+    {
+        io.emit("phase-complete", 3);
+        revealResults();
+    }
 }
 
 function revealResults()
@@ -157,7 +151,6 @@ function revealResults()
 
     io.emit("reveal-results", p1WantsWin ? "Win" : "Lose", p2WantsWin ? "Win" : "Lose");
     io.emit("update-score", p1Score, p2Score);
-    io.emit("phase-complete", 4);
 
     console.log("Revealing...");
     console.log(`P1 Points: ${p1Points} | P2 Points: ${p2Points}`);
@@ -171,7 +164,7 @@ function moveToNextRound()
     p1ThinksP2WantsWin = null;
     p2ThinksP1WantsWin = null;
 
-    io.emit("hide-choices");
+    io.emit("initialize");
     io.emit("update-score", p1Score, p2Score);
 
     console.log("Moving to next round...");
@@ -187,8 +180,18 @@ function resetGame()
     p1Score = 0;
     p2Score = 0;
 
-    io.emit("hide-choices");
+    io.emit("initialize");
     io.emit("update-score", p1Score, p2Score);
 
     console.log("Resetting game...");
+}
+
+function handleDisconnect(socket)
+{
+    console.log("User disconnected: ", socket.id);
+
+    if (socket.id === p1Id) p1Id = 0;
+    else if (socket.id === p2Id) p2Id = 0;
+
+    console.log(`p1Id: ${p1Id}, p2Id: ${p2Id}`);
 }

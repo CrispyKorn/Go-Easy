@@ -1,3 +1,20 @@
+class ToggleElement
+{
+    element;
+    #visibleTag;
+
+    constructor(element, visibleTag)
+    {
+        this.element = element;
+        this.visibleTag = visibleTag;
+    }
+
+    setVisibility(visible)
+    {
+        this.element.style.display = visible ? this.visibleTag : "none";
+    }
+}
+
 const socket = io();
 
 const preChoiceWin = document.getElementById("pre-choice-win");
@@ -7,83 +24,42 @@ const postResultLose = document.getElementById("post-result-lose");
 const postChoiceWin = document.getElementById("post-choice-win");
 const postChoiceLose = document.getElementById("post-choice-lose");
 
-const reveal = document.getElementById("reveal");
-const nextRound = document.getElementById("next-round");
-const resetGame = document.getElementById("reset");
+const nextRound = new ToggleElement(document.getElementById("next-round"), "inline-block");
+const resetGame = new ToggleElement(document.getElementById("reset"), "inline-block");
 
-const sectionOne = document.getElementById("section-one");
-const sectionTwo = document.getElementById("section-two");
-const sectionThree = document.getElementById("section-three");
-const sectionFour = document.getElementById("section-four");
-const sectionFive = document.getElementById("section-five");
-const sectionSix = document.getElementById("section-six");
-const waitingForPlayerOne = document.getElementById("waiting-for-player-one");
-const waitingForPlayerTwo = document.getElementById("waiting-for-player-two");
-const choices = document.getElementById("choices");
+const sectionOne = new ToggleElement(document.getElementById("section-one"), "block");
+const sectionTwo = new ToggleElement(document.getElementById("section-two"), "block");
+const sectionThree = new ToggleElement(document.getElementById("section-three"), "block");
+const sectionFour = new ToggleElement(document.getElementById("section-four"), "block");
+const sectionFive = new ToggleElement(document.getElementById("section-five"), "block");
+const sectionSix = new ToggleElement(document.getElementById("section-six"), "block");
+const sectionWaiting = new ToggleElement(document.getElementById("section-waiting"), "block");
+const waitingforPlayer = document.getElementById("waiting-for-player");
 
 let isPlayerOne = false;
 
-preChoiceWin.addEventListener("click", () => 
-{
-    socket.emit("pre-choice", true);
-});
-
-preChoiceLose.addEventListener("click", () => 
-{
-    socket.emit("pre-choice", false);
-});
-
-postResultWin.addEventListener("click", () => 
-{
-    socket.emit("post-result", true);
-});
-
-postResultLose.addEventListener("click", () => 
-{
-    socket.emit("post-result", false);
-});
-
-postChoiceWin.addEventListener("click", () => 
-{
-    socket.emit("post-choice", true);
-});
-
-postChoiceLose.addEventListener("click", () => 
-{
-    socket.emit("post-choice", false);
-});
-
-reveal.addEventListener("click", () => 
-{
-    socket.emit("reveal");
-});
-
-nextRound.addEventListener("click", () => 
-{
-    socket.emit("next-round");
-});
-
-resetGame.addEventListener("click", () => 
-{
-    socket.emit("reset");
-});
+preChoiceWin.addEventListener("click", () => socket.emit("pre-choice", true));
+preChoiceLose.addEventListener("click", () => socket.emit("pre-choice", false));
+postResultWin.addEventListener("click", () => socket.emit("post-result", true));
+postResultLose.addEventListener("click", () => socket.emit("post-result", false));
+postChoiceWin.addEventListener("click", () => socket.emit("post-choice", true));
+postChoiceLose.addEventListener("click", () => socket.emit("post-choice", false));
+nextRound.element.addEventListener("click", () => socket.emit("next-round"));
+resetGame.element.addEventListener("click", () => socket.emit("reset"));
 
 socket.on("set-playerOne", () => 
 {
     isPlayerOne = true;
 });
 
-socket.on("hide-choices", () => 
+socket.on("initialize", () => 
 {
-    sectionOne.style.display = "block";
-    sectionTwo.style.display = "none";
-    sectionThree.style.display = "none";
-    sectionFour.style.display = "none";
-    choices.style.display = "none";
-    nextRound.style.display = "none";
-    waitingForPlayerOne.style.display = "none";
-    waitingForPlayerTwo.style.display = "none";
-    if (isPlayerOne) document.getElementById("reveal").style.display = "inline-block";
+    hideAllContent();
+
+    waitingforPlayer.innerHTML = `Waiting for Player ${isPlayerOne ? 2 : 1}...`;
+    nextRound.setVisibility(false);
+
+    sectionOne.setVisibility(true);
 });
 
 socket.on("hide-hostonly-content", () => 
@@ -109,6 +85,7 @@ socket.on("update-score", (p1Score, p2Score) =>
 socket.on("client-choice", (choice) => 
 {
     document.getElementById("client-choice").innerHTML = choice;
+    hideAllContent(true);
 });
 
 socket.on("client-result", (result) => 
@@ -119,10 +96,12 @@ socket.on("client-result", (result) =>
 socket.on("client-guess", (guess) => 
 {
     document.getElementById("client-guess").innerHTML = guess;
+    hideAllContent(true);
 });
 
 socket.on("phase-complete", (phase) => 
 {
+    hideAllContent(false);
     MoveToSection(phase + 1);
     console.log(`Moving to phase ${phase}.`);
 });
@@ -133,36 +112,29 @@ function MoveToSection(section)
     {
         case 2: 
         {
-            sectionOne.style.display = "none";
-
-            if (isPlayerOne) sectionTwo.style.display = "block";
-            else waitingForPlayerOne.style.display = "block";
+            if (isPlayerOne) sectionTwo.setVisibility(true);
+            else sectionWaiting.setVisibility(true);
         }
         break;
         case 3: 
         {
-            if (isPlayerOne) sectionTwo.style.display = "none";
-            else waitingForPlayerOne.style.display = "none";
-
-            sectionThree.style.display = "block";
+            sectionThree.setVisibility(true);
         }
         break;
         case 4: 
         {
-            sectionThree.style.display = "none";
-
-            if (isPlayerOne) sectionFour.style.display = "block";
-            else waitingForPlayerOne.style.display = "block";
-        }
-        break;
-        case 5: 
-        {
-            if (isPlayerOne) document.getElementById("reveal").style.display = "none";
-
-            sectionFour.style.display = "block";
-            choices.style.display = "flex";
-            nextRound.style.display = "inline-block";
+            sectionFour.setVisibility(true);
+            nextRound.setVisibility(true);
         }
         break;
     }
+}
+
+function hideAllContent(waiting)
+{
+    sectionOne.setVisibility(false);
+    sectionTwo.setVisibility(false);
+    sectionThree.setVisibility(false);
+    sectionFour.setVisibility(false);
+    sectionWaiting.setVisibility(waiting);
 }
