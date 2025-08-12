@@ -89,6 +89,7 @@ function assignPlayer(socket)
     else 
     {
         console.log(`${socket.id} was disconnected due to a full lobby.`);
+        socket.emit("lobby-full");
         socket.disconnect(true);
     }
 }

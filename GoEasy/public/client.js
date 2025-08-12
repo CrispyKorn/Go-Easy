@@ -35,6 +35,7 @@ const sectionFive = new ToggleElement(document.getElementById("section-five"), "
 const sectionSix = new ToggleElement(document.getElementById("section-six"), "block");
 const sectionWaiting = new ToggleElement(document.getElementById("section-waiting"), "block");
 const waitingforPlayer = document.getElementById("waiting-for-player");
+const player = document.getElementById("player");
 
 let isPlayerOne = false;
 
@@ -57,6 +58,7 @@ socket.on("initialize", () =>
     hideAllContent();
 
     waitingforPlayer.innerHTML = `Waiting for Player ${isPlayerOne ? 2 : 1}...`;
+    player.innerHTML = `Player ${isPlayerOne ? 2 : 1}`;
     nextRound.setVisibility(false);
 
     sectionOne.setVisibility(true);
@@ -104,6 +106,12 @@ socket.on("phase-complete", (phase) =>
     hideAllContent(false);
     MoveToSection(phase + 1);
     console.log(`Moving to phase ${phase}.`);
+});
+
+socket.on("lobby-full", () => 
+{
+    document.querySelector("main").style.display = "none";
+    player.innerHTML = "Lobby full. :( <br/><br/>Try again later."
 });
 
 function MoveToSection(section)

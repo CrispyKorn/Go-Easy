@@ -61,10 +61,15 @@ h1 {
     text-shadow: #FEFFEA 0px 0px 20px;
     font-size: 50px;
     color: #FEFFEA;
+    text-align: center;
+}
+
+#player {
+    text-align: center;
 }
 
 header {
-    height: 150px;
+    height: max(150px, max-content);
     display: flex;
     justify-content: center;
     align-items: center;
