@@ -58,7 +58,7 @@ socket.on("initialize", () =>
     hideAllContent();
 
     waitingforPlayer.innerHTML = `Waiting for Player ${isPlayerOne ? 2 : 1}...`;
-    player.innerHTML = `Player ${isPlayerOne ? 2 : 1}`;
+    player.innerHTML = `Player ${isPlayerOne ? 1 : 2}`;
     nextRound.setVisibility(false);
 
     sectionOne.setVisibility(true);

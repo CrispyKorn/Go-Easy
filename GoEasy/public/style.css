@@ -25,9 +25,11 @@ aside {
 }
 
 main {
-    margin: 20px 20%;
+    margin: 20px auto;
     display: flex;
     height: auto;
+    max-width: 1250px;
+    padding: 0 5%;
 }
 
 * {
@@ -89,6 +91,10 @@ p, h2, h3 {
 
 #choices-player1, #choices-player2, #scores-player1, #scores-player2{
     flex: 1;
+}
+
+.separator {
+    width: 25px;
 }
 
 #section-five {

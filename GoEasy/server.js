@@ -150,7 +150,7 @@ function revealResults()
     p1Score += p1Points;
     p2Score += p2Points;
 
-    io.emit("reveal-results", p1WantsWin ? "Win" : "Lose", p2WantsWin ? "Win" : "Lose");
+    io.emit("reveal-results", p1WantsWin ? "WIN" : "LOSE", p2WantsWin ? "WIN" : "LOSE");
     io.emit("update-score", p1Score, p2Score);
 
     console.log("Revealing...");
