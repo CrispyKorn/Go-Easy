@@ -73,12 +73,16 @@
           </section>
         </div>
         <aside>
-          <p>You want to: </p>
-          <p id="client-choice">...</p>
-          <p>You actually: </p>
-          <p id="client-result">...</p>
-          <p>You think your opponent was trying to: </p>
-          <p id="client-guess">...</p>
+          <p class="aside-summary-heading">You want to: <span id="client-choice" class="aside-summary-content">...</span></p>          
+          <p class="aside-summary-heading">You actually: <span id="client-result" class="aside-summary-content">...</span></p>
+          <p class="aside-summary-heading">You think your opponent was trying to: <span id="client-guess" class="aside-summary-content">...</span></p>          
+          <hr/>
+          <div id="score-breakdown">
+            <h2>Round Summary</h2>
+            <p id="breakdown-goal">Achieved Goal: +1</p>
+            <p id="breakdown-guess">Guessed Correctly: +1</p>
+            <p id="breakdown-score">Score this round: +<span id="breakdown-score-result">2</span></p>
+          </div>    
         </aside>
       </main>
       <footer></footer>

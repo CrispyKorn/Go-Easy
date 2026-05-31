@@ -141,16 +141,22 @@ function revealResults()
     let p1Points = 0;
     let p2Points = 0;
 
-    if (p1WantsWin === p1Won) p1Points++;
-    if (p1ThinksP2WantsWin === p2WantsWin) p1Points++;
+    let p1GoalAchieved = p1WantsWin === p1Won;
+    let p1GuessCorrect = p1ThinksP2WantsWin === p2WantsWin;
 
-    if (p2WantsWin === !p1Won) p2Points++;
-    if (p2ThinksP1WantsWin === p1WantsWin) p2Points++;
+    let p2GoalAchieved = p2WantsWin === !p1Won;
+    let p2GuessCorrect = p2ThinksP1WantsWin === p1WantsWin;
+
+    if (p1GoalAchieved) p1Points++;
+    if (p1GuessCorrect) p1Points++;
+
+    if (p2GoalAchieved) p2Points++;
+    if (p2GuessCorrect) p2Points++;
 
     p1Score += p1Points;
     p2Score += p2Points;
 
-    io.emit("reveal-results", p1WantsWin ? "WIN" : "LOSE", p2WantsWin ? "WIN" : "LOSE");
+    io.emit("reveal-results", p1WantsWin ? "WIN" : "LOSE", p2WantsWin ? "WIN" : "LOSE", p1GoalAchieved, p1GuessCorrect, p2GoalAchieved, p2GuessCorrect);
     io.emit("update-score", p1Score, p2Score);
 
     console.log("Revealing...");
