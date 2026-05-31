@@ -37,6 +37,13 @@ const sectionWaiting = new ToggleElement(document.getElementById("section-waitin
 const waitingforPlayer = document.getElementById("waiting-for-player");
 const player = document.getElementById("player");
 
+const asideSummaryContent = document.getElementsByClassName("aside-summary-content");
+
+const breakdown = new ToggleElement(document.getElementById("score-breakdown"), "block");
+const goalBreakdown = new ToggleElement(document.getElementById("breakdown-goal"), "block");
+const guessBreakdown = new ToggleElement(document.getElementById("breakdown-guess"), "block");
+const breakdownResult = document.getElementById("breakdown-score-result", "inline");
+
 let isPlayerOne = false;
 
 preChoiceWin.addEventListener("click", () => socket.emit("pre-choice", true));
@@ -56,6 +63,10 @@ socket.on("set-playerOne", () =>
 socket.on("initialize", () => 
 {
     hideAllContent();
+    for (const item of asideSummaryContent)
+    {
+        item.innerHTML = "...";
+    }
 
     waitingforPlayer.innerHTML = `Waiting for Player ${isPlayerOne ? 2 : 1}...`;
     player.innerHTML = `Player ${isPlayerOne ? 1 : 2}`;
@@ -72,10 +83,20 @@ socket.on("hide-hostonly-content", () =>
     });
 });
 
-socket.on("reveal-results", (p1Desire, p2Desire) => 
+socket.on("reveal-results", (p1Desire, p2Desire, p1GoalAchieved, p1GuessCorrect, p2GoalAchieved, p2GuessCorrect) => 
 {
     document.getElementById("player-one-choice").innerHTML = p1Desire;
     document.getElementById("player-two-choice").innerHTML = p2Desire;
+
+    goalBreakdown.setVisibility(isPlayerOne && p1GoalAchieved || !isPlayerOne && p2GoalAchieved);
+    guessBreakdown.setVisibility(isPlayerOne && p1GuessCorrect || !isPlayerOne && p2GuessCorrect);
+
+    let score = 0;
+    if (isPlayerOne && p1GoalAchieved || !isPlayerOne && p2GoalAchieved) score++;
+    if (isPlayerOne && p1GuessCorrect || !isPlayerOne && p2GuessCorrect) score++;
+    breakdownResult.innerHTML = score;
+
+    breakdown.setVisibility(true);
 });
 
 socket.on("update-score", (p1Score, p2Score) => 
@@ -145,4 +166,8 @@ function hideAllContent(waiting)
     sectionThree.setVisibility(false);
     sectionFour.setVisibility(false);
     sectionWaiting.setVisibility(waiting);
+    
+    breakdown.setVisibility(false);
+    goalBreakdown.setVisibility(false);
+    guessBreakdown.setVisibility(false);
 }
